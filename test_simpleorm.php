@@ -35,7 +35,7 @@ $query->setWhere()->appendCondition('id','=','?')->appendAnd()->appendOpenBlock(
 $tot = Person::getCount($query,array(3));
 
 /* get the list or records matching the condition defined before and id=3 */
-$list = Person::find($query,array(3));
+$list = Person::find($query,array(1));
 if ($list) {
 	foreach ($list as $l) {
 		// print element
