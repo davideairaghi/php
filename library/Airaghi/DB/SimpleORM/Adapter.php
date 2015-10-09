@@ -4,7 +4,6 @@ namespace Airaghi\DB\SimpleORM;
 
 /*
  * Adapter  a class to handle db connections
- * @version 0.1
  * @notes   implements a very simple adapter (and relative dialect) to the database, very similar to what mysql/mariadb provides
  */
 class Adapter {
@@ -240,23 +239,26 @@ class Adapter {
 	
 	/*
 	 * create a "select db command" based on the data received
-	 * @param array $select
-	 * @param array $from
-	 * @param array $where
-	 * @param array $groupby
-	 * @param array $having
-	 * @param array $orderby
+	 * @param boolean $distinct
+	 * @param array   $select
+	 * @param array   $from
+	 * @param array   $where
+	 * @param array   $groupby
+	 * @param array   $having
+	 * @param array   $orderby
 	 * @param integer $offset
 	 * @param integer $limit
 	 * @return string
 	 */
-	public function parseSelect($select,$from,$where,$groupby,$having,$orderby,$offset,$limit) {
+	public function parseSelect($distinct,$select,$from,$where,$groupby,$having,$orderby,$offset,$limit) {
 		if ($orderby) {
 				foreach ($oderby as $k=>$v) {
 					$orderby[$k] = $k.' '.$v;
 				}
 		}
-		$query = 'SELECT '.implode(',',$select).' '.
+		$query = 'SELECT '.
+				  ($distinct ? ' DISTINCT ' : '').
+				  implode(',',$select).' '.
 				 'FROM '.implode(',',$from).' '.
 				 'WHERE '.implode(' ',$where).' '.
 				 ($groupby ? ' GROUP BY '.implode(',',$groupby).' ' : '').

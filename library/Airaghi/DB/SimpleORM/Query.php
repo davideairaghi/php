@@ -4,10 +4,15 @@ namespace Airaghi\DB\SimpleORM;
 
 /*
  * Query  a class to handle queries
- * @version   0.1
  * @notes     
  */
 class Query {
+	
+	/*
+	 * select only distinct rows ?
+	 * @var boolean 
+	 */
+	protected $distinct = false;
 	
 	/*
 	 * columns list
@@ -146,6 +151,17 @@ class Query {
 	 */
 	public function &setCount($column,$distinct=false) {
 		$this->columns = array( $this->adapter->opCount($column,$distinct) );
+		return $this;
+	}
+	
+	
+	/*
+	 * enable (or disable) returning distinct records
+	 * @param boolean $distinct
+	 * @return \Airaghi\DB\SimpleORM\Query 
+	 */
+	public function &setDistinct($distinct=true) {
+		$this->distinct = $distinct;
 		return $this;
 	}
 	
@@ -393,7 +409,7 @@ class Query {
 				break;
 			case 'select':
 			default:
-				$this->command = $this->adapter->parseSelect($this->columns, $this->tables, $this->where, $this->group, $this->having, $this->order, $this->offset, $this->limit);
+				$this->command = $this->adapter->parseSelect($this->distinct,$this->columns, $this->tables, $this->where, $this->group, $this->having, $this->order, $this->offset, $this->limit);
 				break;
 		}
 		return $this->command;

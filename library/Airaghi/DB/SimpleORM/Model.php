@@ -4,7 +4,6 @@ namespace Airaghi\DB\SimpleORM;
 
 /*
  * Model    a class to handle data mapped to database tables
- * @version 0.1
  * @notes   only tables with exactly one primary key are supported and it has to be an integer number
  *          table names automatically determined will be forced to lower case
  */

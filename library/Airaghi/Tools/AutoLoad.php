@@ -4,7 +4,6 @@ namespace Airaghi\Tools;
 
 /*
  * AutoLoad  a class to setup auto loading of classes, interfaces, traits
- * @version 0.1
  * @notes   namespace is used to identify directories, name is used to identify filesize
  *          every string is case sensitive and file names must have ".php" extension
  */
