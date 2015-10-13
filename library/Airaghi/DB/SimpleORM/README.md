@@ -138,9 +138,15 @@ See the "test file"  https://github.com/davideairaghi/php/blob/master/test_simpl
     a specific adapter to use (in *$adapter*).
 
   If you use *?* in your query remeber to specify in *$params* all the values in the same order.
+  
+  The result of *find()* is an object, you can iterate over results in it using a simple *foreach*.
+  
+  The result of *findFirst()* is and instance of the model.
+  
+  When the system does not give you back results it returns *null*.
 
   Examples:
-  - find all the users with id > 3 and email not empty
+  - find all the users with id > 3 and email not empty, and for each of them print the name
   ```
   $query = Person::initQuery();
   $query->setWhere();
@@ -148,6 +154,13 @@ See the "test file"  https://github.com/davideairaghi/php/blob/master/test_simpl
   $query->appendOpenBlock()->appendCondition('email','<>','""')->appendCloseBlock();
   $query->close();
   $list = Person::find($query,array(3));
+  if (null !== $list) {
+    foreach ($list as $person) {
+      echo 'Name: '.$person->name.PHP_EOL;
+    }
+  } else {
+    echo 'No results'.PHP_EOL;
+  }
   ```
   - find the first user inserted with email not empty
   ```
