@@ -2,7 +2,7 @@
 
 // original work: https://github.com/fishjerky/phalcon-mssql
 // modified by Davide Airaghi (www.airaghi.net) to use with SQL Server 2008 and Microsoft SQL Server PDO driver
-// version: 0.1
+// version: 0.1.1
 // PhalconPHP: starting from version 2.0.x
 // Note: rename this file to Mssql.php before using it
 
@@ -376,7 +376,7 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
                     }
                     for ($index=$first_index;$index<$last_index;$index++) {
                         // print_r($placeholders);die;
-                        if (isset($placeholders[$index])) {
+                        if (isset($placeholders[$index]) || array_key_exists($index,$placeholders)) {
                                 $val = $placeholders[ $index ];
                                 $val = strtolower(gettype($val));
                                 switch ($val) {
