@@ -6,7 +6,7 @@
 // PhalconPHP: starting from version 3.0.x
 // Note: rename this file to Mssql.php before using it
 
-namespace Airaghi\PhalconPHP\MSQQL\Adapter;
+namespace Airaghi\PhalconPHP\MSSQL\Adapter;
 
 use Phalcon;
 use Phalcon\Db\Column;
