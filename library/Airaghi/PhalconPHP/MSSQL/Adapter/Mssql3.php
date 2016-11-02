@@ -236,7 +236,7 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
 		
         $this->execute('SET QUOTED_IDENTIFIER ON');
 
-        $this->_dialect = new \Airaghi\PhalconPHP\MSQQL\Dialect\Mssql();
+        $this->_dialect = new \Airaghi\PhalconPHP\MSSQL\Dialect\Mssql();
     }
 
     public function query($sql, $bindParams = null, $bindTypes = null)
