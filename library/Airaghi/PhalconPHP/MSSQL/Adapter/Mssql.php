@@ -396,8 +396,6 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
                                                 break;
                                 }
                                 $dataTypes[] = $newval;
-                        } else {
-
                         }
                     }
                     // fine fix PhalconPHP 2.0.4+ ...
@@ -453,9 +451,8 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
             } else {
                 if (is_string($wildcard)) {
                     $parameter = $wildcard;
-                } else {
-                    throw new \Phalcon\Db\Exception("Invalid bind parameter (#1)");
                 }
+                throw new \Phalcon\Db\Exception("Invalid bind parameter (#1)");
             }
                             
             if (is_array($dataTypes) && !empty($dataTypes)) {
@@ -467,7 +464,7 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
                 /**
                  * The bind type is double so we try to get the double value
                  */
-                $castValue;
+                $castValue = $value;
                 if ($type == \Phalcon\Db\Column::BIND_PARAM_DECIMAL) {
                     $castValue = doubleval($value);
                     $type = \Phalcon\Db\Column::BIND_SKIP;
@@ -476,8 +473,6 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
                     $type      = \Phalcon\Db\Column::BIND_SKIP;
                     $castValue = null;
                 // fine fix PhalconPHP 2.0.4+ ...
-                } else {
-                    $castValue = $value;
                 }
 
                 /**
@@ -604,14 +599,12 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
 			$this->_lastID = $ret[0]['newid'];
 			if ($this->_lastID > 0) {
 				return true;
-			} else {
-				$this->_lastID = null;
-				return false;
 			}
-		} else {
 			$this->_lastID = null;
 			return false;
 		}
+		$this->_lastID = null;
+		return false;
     }
 
     public function update($table, $fields, $values, $whereCondition = null, $dataTypes = null)
@@ -619,11 +612,9 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
 	
         $placeholders = array();
         $updateValues = array();
-
+        $bindDataTypes = $dataTypes;
         if (is_array($dataTypes)) {
             $bindDataTypes = array();
-        } else {
-            $bindDataTypes = $dataTypes;
         }
 
         /**

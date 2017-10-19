@@ -307,15 +307,9 @@ class Statement extends PDOStatement {
 					{
 						return $value->load();
 					}
-					else
-					{
-						return $value;
-					}
+					return $value;
 				}
-				else
-				{
-					return false;
-				}
+				return false;
 				break;
 
 			case PDO::FETCH_OBJ:
@@ -338,33 +332,23 @@ class Statement extends PDOStatement {
 					{
 						$object = $this->_fetchIntoObject;
 					}
-					else
-					{
-						// Object to set into has not been set
-						return false;
-					}
+					// Object to set into has not been set
+					return false;
 				}
 				else
 				{
+					$className = $this->_fetchClassName;
+					$ctorargs = $this->_fetchCtorargs;
+					$object = new $className();
 					if ($fetchMode === PDO::FETCH_OBJ)
 					{
 						$className = '\stdClass';
 						$ctorargs = array();
 					}
-					else
-					{
-						$className = $this->_fetchClassName;
-						$ctorargs = $this->_fetchCtorargs;
-					}
-
 					if ($ctorargs)
 					{
 						$reflectionClass = new \ReflectionClass($className);
 						$object = $reflectionClass->newInstanceArgs($ctorargs);
-					}
-					else
-					{
-						$object = new $className();
 					}
 				}
 
@@ -383,14 +367,11 @@ class Statement extends PDOStatement {
 						$rs[$field] = null;
 					}
 
+					$object->$field = $value;
 					// convert LOB to string
 					if ($this->_returnLobs && is_object($value))
 					{
 						$object->$field = $value->load();
-					}
-					else
-					{
-						$object->$field = $value;
 					}
 				}
 
@@ -404,9 +385,8 @@ class Statement extends PDOStatement {
 					$data = oci_fetch_assoc($this->_sth);
 					if (!$data) {
 						return array( 'numrows' => 0 );
-					} else {
-						return array( 'numrows' => intval($data['numrows']) );
 					}
+					return array( 'numrows' => intval($data['numrows']) );
 				}
 				
 				break;

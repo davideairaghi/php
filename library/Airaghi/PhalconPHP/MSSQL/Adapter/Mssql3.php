@@ -467,7 +467,7 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
                 /**
                  * The bind type is double so we try to get the double value
                  */
-                $castValue;
+                $castValue = $value;
                 if ($type == \Phalcon\Db\Column::BIND_PARAM_DECIMAL) {
                     $castValue = doubleval($value);
                     $type = \Phalcon\Db\Column::BIND_SKIP;
@@ -476,8 +476,6 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
                     $type      = \Phalcon\Db\Column::BIND_SKIP;
                     $castValue = null;
                 // fine fix PhalconPHP 2.0.4+ ...
-                } else {
-                    $castValue = $value;
                 }
 
                 /**
@@ -532,11 +530,10 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
 
         $placeholders = array();
         $insertValues = array();
+        $bindDataTypes = $dataTypes;
 
         if (!is_array($dataTypes)) {
             $bindDataTypes = array();
-        } else {
-            $bindDataTypes = $dataTypes;
         }
 
         /**
@@ -619,11 +616,10 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
 	
         $placeholders = array();
         $updateValues = array();
-
+        $bindDataTypes = $dataTypes;
+        
         if (is_array($dataTypes)) {
             $bindDataTypes = array();
-        } else {
-            $bindDataTypes = $dataTypes;
         }
 
         /**

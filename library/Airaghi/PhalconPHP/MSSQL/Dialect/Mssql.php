@@ -159,14 +159,8 @@ class Mssql extends \Phalcon\Db\Dialect //implements \Phalcon\Db\DialectInterfac
                 if (is_array($columnItem)) {
                     $columnSql = $this->getSqlExpression($columnItem, $escapeChar);
                 } else {
+                    $columnSql = $columnItem;
                     if ($columnItem == "*") {
-                        $columnSql = $columnItem;
-                    } else {
-                        /*if globals_get("db.escape_identifiers") {
-                          let columnSql = escapeChar . columnItem . escapeChar;
-                          } else {
-                          let columnSql = columnItem;
-                          }*/
                         $columnSql = $columnItem;
                     }
                 }
@@ -176,6 +170,7 @@ class Mssql extends \Phalcon\Db\Dialect //implements \Phalcon\Db\DialectInterfac
                  */
                 if (isset($column[1])) {
                     $columnDomain = $column[1];
+                    $columnDomainSql = $columnSql;
                     if ($columnDomain) {
                         /*if globals_get("db.escape_identifiers") {
                           let columnDomainSql = escapeChar . columnDomain . escapeChar . "." . columnSql;
@@ -183,8 +178,6 @@ class Mssql extends \Phalcon\Db\Dialect //implements \Phalcon\Db\DialectInterfac
                           let columnDomainSql = columnDomain . "." . columnSql;
                           }*/
                         $columnDomainSql = $columnDomain . "." . $columnSql;
-                    } else {
-                        $columnDomainSql = $columnSql;
                     }
                 } else {
                     $columnDomainSql = $columnSql;
@@ -218,14 +211,13 @@ class Mssql extends \Phalcon\Db\Dialect //implements \Phalcon\Db\DialectInterfac
         /**
          * Check and escape tables
          */
+        $tablesSql = $tables;
         if (is_array($tables)) {
             $selectedTables = array();
             foreach ($tables as $table) {
                 $selectedTables[] = $this->getSqlTable($table, $escapeChar);
             }
             $tablesSql = join(", ", $selectedTables);
-        } else {
-            $tablesSql = $tables;
         }
 
         $sql = "SELECT $columnsSql FROM /*tbl*/ $tablesSql ";
@@ -267,10 +259,9 @@ class Mssql extends \Phalcon\Db\Dialect //implements \Phalcon\Db\DialectInterfac
         $sqlWhere = '';
         if (isset($definition['where'])) {
             $whereConditions = $definition['where'];
+            $sqlWhere .= " WHERE " . $whereConditions;
             if (is_array($whereConditions)) {
                 $sqlWhere .= " WHERE " . $this->getSqlExpression($whereConditions, $escapeChar);
-            } else {
-                $sqlWhere .= " WHERE " . $whereConditions;
             }
         }
 
@@ -311,11 +302,10 @@ class Mssql extends \Phalcon\Db\Dialect //implements \Phalcon\Db\DialectInterfac
                 /**
                  * In the numeric 1 position could be a ASC/DESC clause
                  */
+                $orderSqlItemType = $orderSqlItem;
                 if (isset($orderItem[1])) {
                     $sqlOrderType = $orderItem[1];
                     $orderSqlItemType = $orderSqlItem . " " . $sqlOrderType;
-                } else {
-                    $orderSqlItemType = $orderSqlItem;
                 }
 
                 //check nolock
