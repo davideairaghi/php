@@ -256,12 +256,11 @@ class Mssql extends \Phalcon\Db\Dialect //implements \Phalcon\Db\DialectInterfac
         /**
          * Check for a WHERE clause
          */
-        $sqlWhere = '';
         if (isset($definition['where'])) {
             $whereConditions = $definition['where'];
-            $sqlWhere .= " WHERE " . $whereConditions;
+            $sqlWhere = " WHERE " . $whereConditions;
             if (is_array($whereConditions)) {
-                $sqlWhere .= " WHERE " . $this->getSqlExpression($whereConditions, $escapeChar);
+                $sqlWhere = " WHERE " . $this->getSqlExpression($whereConditions, $escapeChar);
             }
         }
 

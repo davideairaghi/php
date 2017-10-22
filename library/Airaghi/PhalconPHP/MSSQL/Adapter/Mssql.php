@@ -449,10 +449,10 @@ class Mssql extends AdapterPdo implements EventsAwareInterface, AdapterInterface
             if (is_int($wildcard)) {
                 $parameter = $wildcard + 1;
             } else {
-                if (is_string($wildcard)) {
-                    $parameter = $wildcard;
+                if (!is_string($wildcard)) {
+                    throw new \Phalcon\Db\Exception("Invalid bind parameter (#1)");
                 }
-                throw new \Phalcon\Db\Exception("Invalid bind parameter (#1)");
+                $parameter = $wildcard;
             }
                             
             if (is_array($dataTypes) && !empty($dataTypes)) {
